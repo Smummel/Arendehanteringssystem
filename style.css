@@ -23,18 +23,17 @@ body{
 #background{
     position: sticky;
     height: 100vh;
-    overflow: hidden;
 }
 #background img{
-    height: 100vh;
+    height: 500px;
     position: sticky;
 }
 #fadebox{
-    position: absolute;
+    position: sticky;
     width: 100%;
     height: 100vh;
-    background-image: linear-gradient(to right, transparent,black);
-    z-index: 1;
+    background-image: linear-gradient(to right, transparent,red);
+    z-index: 5;
 }
 #nav{
     position: absolute;

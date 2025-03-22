@@ -22,9 +22,6 @@
             <a href="">Logga in</a>
         </div>
     </div>
-
-
-
     <?php
         if(isset($_GET['location'])){
             $location = $_GET['location'];
