@@ -17,26 +17,61 @@
     <div id="nav">
         <div id="navbox">
             <div id="logo">m</div>
-            <a href="">Hem</a>
-            <a href="">Om oss</a>
+            <a href="index.php?location=home">Hem</a>
+            <a href="index.php?location=omoss">Om oss</a>
             <a href="">Logga in</a>
         </div>
     </div>
-    <div id="homecontent">
-        <p>Problem med spöken, förbannelser eller saker som rör sig av sig själva? Vi fixar det!</p>
-        <h1>Mystic Fixers</h1>
-        <div id="homecontentButtons">
-            Välkommen! Hur kan vi hjälpa dig?
-            <a id="akut" href="">Akut hjälp!</a>
-            <a href="">Rapportera ett fall</a>
-            <a href="">Se våra tidigare fall</a>
-        </div>
-    </div>
+
+
+
+    <?php
+        if(isset($_GET['location'])){
+            $location = $_GET['location'];
+        } else{
+            $location = 'home';
+        }
+        if($location=='home'){
+            ?>
+            <div id="homecontent">
+                    <p>Problem med spöken, förbannelser eller saker som rör sig av sig själva? Vi fixar det!</p>
+                    <h1>Mystic Fixers</h1>
+                    <div id="homecontentButtons">
+                        Välkommen! Hur kan vi hjälpa dig?
+                        <a id="akut" href="tel:666">Akut hjälp!</a>
+                        <a href="">Rapportera ett fall</a>
+                        <a href="">Se våra tidigare fall</a>
+                    </div>
+                </div>
+            <?php
+        } elseif($location=='omoss'){
+            ?>
+            <div id="omosscontent">
+                
+            </div>
+            <?php
+        } elseif($location=='loggain'){
+            ?>
+            
+            <?php
+        } elseif($location=='faq'){
+            ?>
+            <div id="faqcontent">
+                <h2>Vanliga frågor:</h2>
+                <p>Q: Hur vet jag om jag behöver er hjälp?<br>A: Rapportera ditt fall så överväger vi. </p>
+                <p>Q: Jag tror att jag är hemsökt, vad ska jag göra? <br>A: Rapportera ditt fall till oss, ring vårt nödnummer om det behövs.</p>
+                <p>Q: Jag har en känsla av att någon tittar på mig när jag är ensam, men ser ingen. Är det något övernaturligt?<br>A: Ring nödnumret. </p>
+                <p>Q: Är det sant att spöken gillar att spela på Ouija-brädor?<br>A: Nej, det är bara påhitt. Spöken spelar biljard.</p>
+                <p>Q: Finns verkligen spöken?<br>A: Kolla på våra inlägg och avgör själv.</p>
+            </div>
+            <?php
+        }
+        ?>
     <div id="footer">
         <h1></h1>
         <div id="footbar">
             <div id="footerstuff">
-                <a href="">FAQ</a>
+                <a href="index.php?location=faq">FAQ</a>
                 <p>&copy;Mystic Fixers 2025</p>
             </div>
         </div>
