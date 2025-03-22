@@ -18,21 +18,22 @@ body{
     align-items: center;
     justify-content: center;
     flex-direction: row;
+    overflow: hidden;
 }
 
 #background{
-    position: sticky;
+    position: fixed; /*DONT FUCKING CHANGE FROM FIXED*/
+    width: 100%;
     height: 100vh;
 }
 #background img{
-    height: 500px;
-    position: sticky;
+    height: 100vh;
 }
 #fadebox{
-    position: sticky;
+    position: fixed; /*YOU DONT WANT TO GO THROUGH THIS AGAIN*/
     width: 100%;
     height: 100vh;
-    background-image: linear-gradient(to right, transparent,red);
+    background-image: linear-gradient(to right, transparent,black);
     z-index: 5;
 }
 #nav{
@@ -164,8 +165,21 @@ body{
     padding: 10px;
     font-size: .75rem;
     overflow: scroll;
+    box-shadow: 0 0 15px 10px var(--primary2);
 }
 #faqcontent p{
     margin: 10px;
     font-size: 0.9rem;
+    text-shadow: 0 0 5px rgb(42, 84, 42);
+}
+#omosscontent{
+    position: absolute;
+    width: 300px;
+    height: 500px;
+    top: 120px;
+    z-index: 2;
+    color: white;
+}
+#omosscontent h1, #omosscontent p{
+    text-align: center;
 }
