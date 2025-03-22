@@ -8,7 +8,7 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: "Sour Gummy";
+    font-family: "PT Serif Caption";
 }
 
 body{
@@ -182,4 +182,101 @@ body{
 }
 #omosscontent h1, #omosscontent p{
     text-align: center;
+}
+#notfound{
+    width: auto;
+    height: auto;
+    position: absolute;
+    top: 150px;
+    text-align: center;
+    z-index: 4;
+}
+#notfound h1{
+    color: white;
+    font-size: 2rem;
+    user-select: none;
+    text-decoration: underline;
+}
+#selection{
+    position: absolute;
+    top: 100px;
+    bottom: 70px;
+    width: 80%;
+    max-width: 600px;
+    height: auto;
+    background-color: transparent;
+    z-index: 3;
+    overflow-y: scroll;
+}
+#selection h2{
+    color: white;
+    text-align: center;
+}
+#login{
+    top: 20px;
+    margin: 20px;
+    margin-bottom: 40px;
+    height: 200px;
+    width: 250px;
+    outline: 5px solid var(--primary);
+    background-color: var(--primary2);
+    margin-right: auto;
+    margin-left: auto;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: start;
+}
+
+#login form input{
+    background-color: black;
+    color: white;
+    padding: 5px;
+}
+#login form{
+    height: 100%;
+    width: auto;
+    display: flex;
+    align-items: start;
+    justify-content: space-evenly;
+    flex-direction: column;
+}
+#register{
+    width: 250px;
+    height: 300px;
+    background-color: var(--primary2);
+    outline: 5px solid var(--primary);
+    position: relative;
+    display: flex;
+    align-items: start;
+    justify-content: center;
+    color: white;
+    margin: 20px;
+    margin-left: auto;
+    margin-right: auto;
+}
+#register form{
+    height: 100%;
+    width: auto;
+    display: flex;
+    align-items: start;
+    justify-content: space-evenly;
+    flex-direction: column;
+}
+#register form input{
+    background-color: black;
+    color: white;
+    padding: 5px;
+}
+#blog{
+    position: absolute;
+    top: 100px;
+    bottom: 70px;
+    width: 80%;
+    max-width: 600px;
+    height: auto;
+    background-color: transparent;
+    z-index: 3;
+    overflow-y: scroll;
+    background-color: white;
 }

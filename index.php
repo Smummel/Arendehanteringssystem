@@ -1,13 +1,53 @@
 <!DOCTYPE html>
+<?php
+
+    $server="localhost";
+    $user="root";
+    $password="";
+    $link=mysqli_connect($server, $user, $password, "mysticfixers");
+
+    if(isset($_POST['btn'])){
+        $username=$_POST['username'];
+        $password=md5($_POST['password']);
+        $email=$_POST['email'];
+        $telefon=$_POST['telefon'];
+        $sql="INSERT INTO users(username, password, role, email, telefon) VALUES ('$username', '$password', 'user', '$email', '$telefon')";
+        $result=mysqli_query($link, $sql);
+    }
+
+?>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>hej</title>
+    <?php
+    $page = $_GET['location'];
+    if($page=='home'){
+        echo '<title>Mystic Fixers - Hem</title>';
+    } elseif($page=='omoss'){
+        echo '<title>Mystic Fixers - Om Oss</title>'; 
+    } elseif($page=='login'){
+        echo '<title>Mystic Fixers - Logga in</title>'; 
+    } elseif($page=='faq'){
+        echo '<title>Mystic Fixers - FAQ</title>'; 
+    } elseif($page=='report'){
+        echo '<title>Mystic Fixers - Formulär</title>'; 
+    } elseif($page=='blog'){
+        echo '<title>Mystic Fixers - Blog</title>'; 
+    } else{
+        echo '<title>Mystic Fixers</title>'; 
+    } 
+    ?>
     <link rel="stylesheet" href="style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Sour+Gummy:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cherry+Cream+Soda&family=Sour+Gummy:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=PT+Serif+Caption:ital@0;1&display=swap" rel="stylesheet">
 </head>
 <body>
     <div id="background">
@@ -19,7 +59,7 @@
             <div id="logo">m</div>
             <a href="index.php?location=home">Hem</a>
             <a href="index.php?location=omoss">Om oss</a>
-            <a href="index.php?location=login">Logga in</a>
+            <a href="index.php?location=login">Profil</a>
         </div>
     </div>
     <?php
@@ -29,7 +69,7 @@
             $location = 'home';
         }
         if($location=='home'){
-            ?>
+            ?>    
             <div id="homecontent">
                     <p>Problem med spöken, förbannelser eller saker som rör sig av sig själva? Vi fixar det!</p>
                     <h1>Mystic Fixers</h1>
@@ -48,11 +88,36 @@
                 <p>Välkommen till Mystic Fixers - experterna på att lösa det övernaturliga! Vi är ett team av erfarna utredare, mediet och teknikspecialister som hanterar allt från envisa spöken och mystiska skuggor till förbannade föremål och okända energier. Oavsett om du upplever märkliga ljud, plötsliga temperaturförändringar eller andra oförklarliga fenomen, står vi redo att hjälpa dig. Med en kombination av vetenskapliga metoder och gammal visdom ser vi till att din omgivning blir trygg igen. Mystic Fixers - för paranormala problem utan naturliga lösningar.</p>
             </div>
             <?php
-        } elseif($location=='loggain'){
+        } elseif($location=='login'){
             ?>
-            <div id="login">
+            <div id="selection">
+                <div id="login">
+                    <form action="index.php?location=login" method="POST">
+                            <h1>Logga in</h1>
+                            <input type="text" name="username" placeholder="Användarnamn" required>
+                            <input type="password" name="password" placeholder="Lösenord" required>
+                            <input type="submit" name="login" value="Logga in">
+                        </form>
+                    </div>
+                <h2>Inget konto? Skapa ett här!</h2>
+                <div id="register">
+                    <form action="index.php" method="POST">
+                        <h1>Registrering</h1>
+                        <input type="text" name="username" placeholder="Användarnamn" required>
+                        <input type="pass
+                        word" name="password" placeholder="Lösenord" required>
+                        <input type="text" name="telefon" placeholder="Telefon" required>
+                        <input type="text" name="email" placeholder="E-mail" required>
+                        <input type="submit" name="btn" value="Skapa Konto">
+                    </form>
+                </div>
+
+
                 
+
+
             </div>
+            
             <?php
         } elseif($location=='faq'){
             ?>
@@ -66,6 +131,28 @@
                 <p>Q: Jag hittade något slemmigt i min sons sovrum, är det spökslemm?<br>A: Vi är redan påväg.</p>
             </div>
             <?php
+        } elseif($location=='report'){
+            ?>
+            <div id="report">
+                
+            </div>
+            <?php
+        } elseif($location=='blog'){
+            ?>
+            <div id="blog">
+                <?php
+                    $sql="SELECT * FROM blogposts ORDER BY id ASC";
+                    $result=mysqli_query($link, $sql);
+                    while($rad=mysqli_fetch_assoc($result)){ ?>
+                        <h2><?=$rad["title"]?></h2>
+                        <img src="image.php?id=<?=$rad['id']?>" alt="">
+                        <p><?=$rad["caption"]?></p>
+                    <?php }
+                ?>
+            </div>
+            <?php
+        }else{
+            ?><div id="notfound"><h1>404 : Not found</h1></div><?php
         }
         ?>
     <div id="footer">
