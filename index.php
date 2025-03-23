@@ -14,6 +14,11 @@
         $sql="INSERT INTO users(username, password, role, email, telefon) VALUES ('$username', '$password', 'user', '$email', '$telefon')";
         $result=mysqli_query($link, $sql);
     }
+    if(isset($_GET['id'])){
+        $id=$_GET['id'];
+        $sql="DELETE FROM blogposts WHERE id=$id";
+        $result=mysqli_query($link, $sql);
+    }
 
 ?>
 <html lang="en">
@@ -132,16 +137,40 @@
             </div>
             <?php
         } elseif($location=='blog'){
+            if(isset($_POST['post'])){
+                $file_name = $_FILES['image']['name'];
+                $tempname = $_FILES['image']['tmp_name'];
+                $folder = 'images/'.$file_name;
+                $title=$_POST['title'];
+                $caption=$_POST['caption'];
+                $sql = "INSERT INTO blogposts(title, image, caption) VALUES ('$title','$file_name','$caption')";
+                $result = mysqli_query($link, $sql);
+                move_uploaded_file($tempname, $folder);
+            }
             ?>
             <div id="blog">
+                <div id="skapapost">
+                    <form action="index.php?location=blog" method="POST" enctype="multipart/form-data">
+                        <h1>Skapa inlägg</h1>
+                        <input type="text" name="title" placeholder="Titel">
+                        <input type="file" name="image">
+                        <input type="text" name="caption" placeholder="Undertext">
+                        <input type="submit" name="post" value="Lägg upp"></button>
+                    </form>
+                </div>
                 <?php
-                    $sql="SELECT * FROM blogposts ORDER BY id ASC";
+                $sql = "SELECT * FROM blogposts ORDER BY id ASC";
                     $result=mysqli_query($link, $sql);
-                    while($rad=mysqli_fetch_assoc($result)){ ?>
-                        <h2><?=$rad["title"]?></h2>
-                        <img src="image.php?id=<?=$rad['id']?>" alt="">
-                        <p><?=$rad["caption"]?></p>
-                    <?php }
+                    while($rad=mysqli_fetch_assoc($result)){
+                        ?>
+                            <div class=post>
+                                <h2><?=$rad["title"]?></h2>
+                                <img src="images/<?=$rad["image"]?>">
+                                <p><?=$rad["caption"]?></p>
+                                <a href="index.php?location=blog&id=<?=$rad['id']?>">Delete</a>
+                            </div>
+                        <?php
+                    }
                 ?>
             </div>
             <?php
