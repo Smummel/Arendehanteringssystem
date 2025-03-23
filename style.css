@@ -208,6 +208,9 @@ body{
     z-index: 3;
     overflow-y: scroll;
 }
+#selection::-webkit-scrollbar{
+    display: none;
+}
 #selection h2{
     color: white;
     text-align: center;

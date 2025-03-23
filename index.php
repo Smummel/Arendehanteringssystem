@@ -104,18 +104,12 @@
                     <form action="index.php" method="POST">
                         <h1>Registrering</h1>
                         <input type="text" name="username" placeholder="Användarnamn" required>
-                        <input type="pass
-                        word" name="password" placeholder="Lösenord" required>
+                        <input type="password" name="password" placeholder="Lösenord" required>
                         <input type="text" name="telefon" placeholder="Telefon" required>
                         <input type="text" name="email" placeholder="E-mail" required>
                         <input type="submit" name="btn" value="Skapa Konto">
                     </form>
                 </div>
-
-
-                
-
-
             </div>
             
             <?php
