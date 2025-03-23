@@ -63,8 +63,8 @@
         <div id="navbox">
             <div id="logo">m</div>
             <a href="index.php?location=home">Hem</a>
-            <a href="index.php?location=omoss">Om oss</a>
-            <a href="index.php?location=login">Profil</a>
+            <a href="index.php?location=blog">Blog</a>
+            <a href="index.php?location=login">Internt</a>
         </div>
     </div>
     <?php
@@ -104,6 +104,7 @@
                             <input type="submit" name="login" value="Logga in">
                         </form>
                     </div>
+                       <!--
                 <h2>Inget konto? Skapa ett här!</h2>
                 <div id="register">
                     <form action="index.php" method="POST">
@@ -114,8 +115,9 @@
                         <input type="text" name="email" placeholder="E-mail" required>
                         <input type="submit" name="btn" value="Skapa Konto">
                     </form>
-                </div>
+                </div>-->
             </div>
+        
             
             <?php
         } elseif($location=='faq'){
@@ -133,7 +135,20 @@
         } elseif($location=='report'){
             ?>
             <div id="report">
-                
+                <h2>Har du paranormala problem? Fyll i detta formulär!</h2>
+                <form action="index.php?location=report" method="POST">
+                    <p>Kontaktinformation</p>
+                    <input type="text" name="namn" placeholder="Ditt namn:">
+                    <input type="text" name="e-post" placeholder="E-post:">
+                    <input type="text" name="phone" placeholder="Telefonnummer:">
+                    <p>Skriv en utförlig beskrivning av ditt problem.</p>
+                    <input type="text" name="description" placeholder="Skriv här:">
+                    <p>Bild på problem:</p>
+                    <input type="file" name="photo" style="outline:none;">
+                    <input type="submit" name="send" value="Skicka"style="width: 100px;">
+
+                    <p></p>
+                </form>
             </div>
             <?php
         } elseif($location=='blog'){
@@ -182,7 +197,12 @@
         <h1></h1>
         <div id="footbar">
             <div id="footerstuff">
-                <a href="index.php?location=faq">FAQ</a>
+                <div>
+                   <a href="index.php?location=faq">FAQ</a>
+                   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                   <a href="index.php?location=omoss">Om oss</a> 
+                </div>
+                
                 <p>&copy;Mystic Fixers 2025</p>
             </div>
         </div>
