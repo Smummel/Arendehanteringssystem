@@ -370,6 +370,7 @@ body{
     flex-direction: column;
     margin: 10px;
     width: 92%;
+    z-index: 5;
 }
 #report form *{
     margin: 7px;

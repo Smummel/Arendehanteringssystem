@@ -94,6 +94,8 @@
             </div>
             <?php
         } elseif($location=='login'){
+            $sql="SELECT username FROM users";
+            $result=mysqli_query($link, $sql);
             ?>
             <div id="selection">
                 <div id="login">
@@ -125,30 +127,55 @@
             <div id="faqcontent">
                 <h2>Vanliga frågor:</h2>
                 <p>Q: Hur vet jag om jag behöver er hjälp?<br>A: Rapportera ditt fall så överväger vi. </p>
-                <p>Q: Jag tror att jag är hemsökt, vad ska jag göra? <br>A: Rapportera ditt fall till oss, ring vårt nödnummer om det behövs.</p>
-                <p>Q: Min spegelbild försöker prata med mig, vad borde jag göra?<br>A: Ring nödnummret omedelbart. </p>
-                <p>Q: Är det sant att spöken gillar att spela på Ouija-brädor?<br>A: Nej, det är bara påhitt. Spöken spelar biljard.</p>
+                <p>Q: Jag tror att jag är hemsökt, vad ska jag göra? <br>A: Rapportera ditt fall så överväger vi.</p>
+                <p>Q: Min spegelbild försöker prata med mig, vad borde jag göra?<br>A: Rapportera ditt fall. </p>
+                <p>Q: Är det sant att spöken gillar att spela på Ouija-brädor?<br>A: Det beror på spöket.</p>
                 <p>Q: Finns verkligen spöken?<br>A: Ja.</p>
                 <p>Q: Jag hittade något slemmigt i min sons sovrum, är det spökslemm?<br>A: Vi är redan påväg.</p>
             </div>
             <?php
         } elseif($location=='report'){
+            if(isset($_POST['send'])){
+                $name=$_POST['namn'];
+                $email=$_POST['e-post'];
+                $phone=$_POST['phone'];
+                $description=$_POST['description'];
+                $photo=$_POST['photo']['name'];
+                $file_name = $_FILES['photo']['name'];
+                $tempname = $_FILES['photo']['tmp_name'];
+                $folder = 'ticketimages/'.$file_name;
+                $sql = "INSERT INTO tickets(name, email, phone, description, image) VALUES ('$namn','$email','$phone','$description','$file_name')";
+                $result = mysqli_query($link, $sql);
+                move_uploaded_file($tempname, $folder);
+            }
             ?>
             <div id="report">
-                <h2>Har du paranormala problem? Fyll i detta formulär!</h2>
-                <form action="index.php?location=report" method="POST">
-                    <p>Kontaktinformation</p>
-                    <input type="text" name="namn" placeholder="Ditt namn:">
-                    <input type="text" name="e-post" placeholder="E-post:">
-                    <input type="text" name="phone" placeholder="Telefonnummer:">
-                    <p>Skriv en utförlig beskrivning av ditt problem.</p>
-                    <input type="text" name="description" placeholder="Skriv här:">
-                    <p>Bild på problem:</p>
-                    <input type="file" name="photo" style="outline:none;">
-                    <input type="submit" name="send" value="Skicka"style="width: 100px;">
+                
+                <?php
+                    if(isset($_POST['send'])){
+                        ?>
+                            <h1>Tack, vi har nu tagit emot anmälan!</h1>
+                        <?php
+                    } else{
+                        ?><form action="index.php?location=report" method="POST" enctype="multipart/form-data">
+                            <h2>Har du paranormala problem? Fyll i detta formulär!</h2>
+                            <p>Kontaktinformation</p>
+                            <input type="text" name="namn" placeholder="Ditt namn:" required>
+                            <input type="text" name="e-post" placeholder="E-post:" required>
+                            <input type="text" name="phone" placeholder="Telefonnummer:" required>
+                            <p>Skriv en utförlig beskrivning av ditt problem.</p>
+                            <input type="text" name="description" placeholder="Skriv här:" require>
+                            <p>Bild på problem:</p>
+                            <input type="file" name="photo" style="outline:none;">
+                            <input type="submit" name="send" value="Skicka"style="width: 100px;">
 
-                    <p></p>
-                </form>
+                            <p></p>
+                        </form>
+                <?php
+                    }
+                ?>
+                
+                
             </div>
             <?php
         } elseif($location=='blog'){
@@ -164,6 +191,7 @@
             }
             ?>
             <div id="blog">
+                <!--                            PLACERA DETTA FÖR EMPLOYEES ONLY
                 <div id="skapapost">
                     <form action="index.php?location=blog" method="POST" enctype="multipart/form-data">
                         <h1>Skapa inlägg</h1>
@@ -173,6 +201,7 @@
                         <input type="submit" name="post" value="Lägg upp"></button>
                     </form>
                 </div>
+        -->
                 <?php
                 $sql = "SELECT * FROM blogposts ORDER BY id ASC";
                     $result=mysqli_query($link, $sql);
