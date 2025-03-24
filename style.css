@@ -168,6 +168,9 @@ body{
     overflow: scroll;
     box-shadow: 0 0 15px 10px var(--primary2);
 }
+#faqcontent::-webkit-scrollbar{
+    display: none;
+}
 #faqcontent p{
     margin: 10px;
     font-size: 0.9rem;
@@ -213,7 +216,7 @@ body{
 #selection::-webkit-scrollbar{
     display: none;
 }
-#selection h2{
+#selection h2, #selection h1{
     color: white;
     text-align: center;
 }

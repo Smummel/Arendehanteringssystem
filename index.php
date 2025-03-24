@@ -20,6 +20,21 @@
         $result=mysqli_query($link, $sql);
     }
 
+    function displaylogin(){
+        ?>
+        <div id="selection">
+            <div id="login">
+                <form action="index.php?location=login" method="POST">
+                    <h1>Logga in</h1>
+                    <input type="text" name="username" placeholder="Användarnamn" required>
+                    <input type="password" name="password" placeholder="Lösenord" required>
+                    <input type="submit" name="login" value="Logga in">
+                </form>
+            </div>
+        </div>
+        <?php
+    }
+
 ?>
 <html lang="en">
 <head>
@@ -94,31 +109,48 @@
             </div>
             <?php
         } elseif($location=='login'){
-            $sql="SELECT username FROM users";
-            $result=mysqli_query($link, $sql);
+            
+            if(isset($_POST['login'])){
+                $sql="SELECT username FROM users";
+                $result=mysqli_query($link, $sql);
+                $usernames=[];
+                while($rad=mysqli_fetch_assoc($result)){
+                    $usernames[] = $rad['username'];
+                }
+                $username=$_POST['username'];
+                $password=md5($_POST['password']);
+                if(in_array($username, $usernames)){
+                    $sql="SELECT password FROM users WHERE username = '$username'";
+                    $result=mysqli_query($link, $sql);
+                    $rad=mysqli_fetch_assoc($result);
+                    if($rad['password']==$password){
+                        ?>
+                            <div id="selection">
+                                <h1>Du är inloggad som&nbsp;<?=$username?>.</h1>
+                                <div id="skapapost">
+                                    <form action="index.php?location=blog" method="POST" enctype="multipart/form-data">
+                                        <h1>Skapa inlägg</h1>
+                                        <input type="text" name="title" placeholder="Titel">
+                                        <input type="file" name="image">
+                                        <input type="text" name="caption" placeholder="Undertext">
+                                        <input type="submit" name="post" value="Lägg upp"></button>
+                                    </form>
+                                </div>
+                            </div>
+                        <?php
+                    } else{
+                        displaylogin();
+                        ?><div style="color:red;z-index:10;">Fel användarnamn eller lösenord</div><?php
+                    }
+                } else{
+                    displaylogin();
+                    ?><div style="color:red;z-index:10;">Fel användarnamn eller lösenord</div><?php
+                }
+            } else{
+                displaylogin();
+            }
             ?>
-            <div id="selection">
-                <div id="login">
-                    <form action="index.php?location=login" method="POST">
-                            <h1>Logga in</h1>
-                            <input type="text" name="username" placeholder="Användarnamn" required>
-                            <input type="password" name="password" placeholder="Lösenord" required>
-                            <input type="submit" name="login" value="Logga in">
-                        </form>
-                    </div>
-                       <!--
-                <h2>Inget konto? Skapa ett här!</h2>
-                <div id="register">
-                    <form action="index.php" method="POST">
-                        <h1>Registrering</h1>
-                        <input type="text" name="username" placeholder="Användarnamn" required>
-                        <input type="password" name="password" placeholder="Lösenord" required>
-                        <input type="text" name="telefon" placeholder="Telefon" required>
-                        <input type="text" name="email" placeholder="E-mail" required>
-                        <input type="submit" name="btn" value="Skapa Konto">
-                    </form>
-                </div>-->
-            </div>
+            
         
             
             <?php
@@ -127,8 +159,7 @@
             <div id="faqcontent">
                 <h2>Vanliga frågor:</h2>
                 <p>Q: Hur vet jag om jag behöver er hjälp?<br>A: Rapportera ditt fall så överväger vi. </p>
-                <p>Q: Jag tror att jag är hemsökt, vad ska jag göra? <br>A: Rapportera ditt fall så överväger vi.</p>
-                <p>Q: Min spegelbild försöker prata med mig, vad borde jag göra?<br>A: Rapportera ditt fall. </p>
+                <p>Q: Hur snabbt agerar ni?<br>A: Det beror på fallet, vanligtvist inom 48h.</p>
                 <p>Q: Är det sant att spöken gillar att spela på Ouija-brädor?<br>A: Det beror på spöket.</p>
                 <p>Q: Finns verkligen spöken?<br>A: Ja.</p>
                 <p>Q: Jag hittade något slemmigt i min sons sovrum, är det spökslemm?<br>A: Vi är redan påväg.</p>
@@ -191,6 +222,7 @@
             }
             ?>
             <div id="blog">
+                <h1 style="width:100%; color:white; text-align:center;">Blogsida</h1>
                 <!--                            PLACERA DETTA FÖR EMPLOYEES ONLY
                 <div id="skapapost">
                     <form action="index.php?location=blog" method="POST" enctype="multipart/form-data">
