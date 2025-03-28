@@ -107,7 +107,7 @@
                     <div id="homecontentButtons">
                         Välkommen! Hur kan vi hjälpa dig?
                         <a id="akut" href="tel:666">Akut hjälp!</a>
-                        <a href="index.php?location=report">Rapportera ett fall</a>
+                        <a href="index.php?location=report">Rapportera ett övernaturligt ärende</a>
                         <a href="index.php?location=blog">Se våra tidigare fall</a>
                     </div>
                 </div>
@@ -125,8 +125,32 @@
                 <div id="selection">
                     <h1>Du är inloggad som&nbsp;<?=$_SESSION['username']?>.</h1>
                     <div id="logoutbutton"><a href="logout.php" style="color:red;">Logga ut</a></div>
-                    
+
+                    <h1>Ärenden</h1>
+                    <?php
+                    $sql = "SELECT * FROM tickets ORDER BY id ASC";
+                    $result=mysqli_query($link, $sql);
+                    while($rad=mysqli_fetch_assoc($result)){
+                        ?>
+                            <div class=post>
+                                <div class="kontaktuppgifter">
+                                    <h3>Uppgifter</h3>
+                                    
+                                    <p><?=$rad['name']?></p>
+                                    <p><?=$rad['email']?></p>
+                                    <p><?=$rad['phone']?></p>
+                                </div>
+                                <h3 style="width:100%; padding-left: 20px;">Beskrivning</h3>
+                                <p style="width: 100%; padding-left: 20px;"><?=$rad['description']?></p>
+                                <img src="ticketimages/<?=$rad["image"]?>">
+                                <?php if($_SESSION['login']==True){?><a style="color:red;" href="index.php?location=blog&id=<?=$rad['id']?>">Ta bort ärende</a><?php }?>
+                            </div>
+                        <?php
+                    }
+                    ?> 
+
                 </div>
+
                 <?php
             } else{
                 if(isset($_POST['login'])){
@@ -177,12 +201,13 @@
                 $name=$_POST['namn'];
                 $email=$_POST['e-post'];
                 $phone=$_POST['phone'];
+                $plats=$_POST['plats'];
                 $description=$_POST['description'];
                 $photo=$_POST['photo']['name'];
                 $file_name = $_FILES['photo']['name'];
                 $tempname = $_FILES['photo']['tmp_name'];
                 $folder = 'ticketimages/'.$file_name;
-                $sql = "INSERT INTO tickets(name, email, phone, description, image) VALUES ('$namn','$email','$phone','$description','$file_name')";
+                $sql = "INSERT INTO tickets(name, email, phone, plats, description, image, status) VALUES ('$name','$email','$phone', '$plats', '$description', '$file_name', 'Nytt')";
                 $result = mysqli_query($link, $sql);
                 move_uploaded_file($tempname, $folder);
             }
@@ -201,12 +226,12 @@
                             <input type="text" name="namn" placeholder="Ditt namn:" required>
                             <input type="text" name="e-post" placeholder="E-post:" required>
                             <input type="text" name="phone" placeholder="Telefonnummer:" required>
-                            <p>Skriv en utförlig beskrivning av ditt problem.</p>
+                            <p>Beskriv ditt problem.</p>
+                            <input type="text" name="plats" placeholder="Plats för händelsen:" require>
                             <input type="text" name="description" placeholder="Skriv här:" require>
                             <p>Bild på problem:</p>
                             <input type="file" name="photo" style="outline:none;">
                             <input type="submit" name="send" value="Skicka"style="width: 100px;">
-
                             <p></p>
                         </form>
                 <?php
@@ -223,7 +248,7 @@
                 $folder = 'images/'.$file_name;
                 $title=$_POST['title'];
                 $caption=$_POST['caption'];
-                $sql = "INSERT INTO blogposts(title, image, caption) VALUES ('$title','$file_name','$caption')";
+                $sql = "INSERT INTO blogposts(title, image, caption) VALUES ('$title', '$file_name', '$caption')";
                 $result = mysqli_query($link, $sql);
                 move_uploaded_file($tempname, $folder);
             }
@@ -245,18 +270,6 @@
                     <?php
                     
                 } ?>
-                
-                <!--                            PLACERA DETTA FÖR EMPLOYEES ONLY
-                <div id="skapapost">
-                    <form action="index.php?location=blog" method="POST" enctype="multipart/form-data">
-                        <h1>Skapa inlägg</h1>
-                        <input type="text" name="title" placeholder="Titel">
-                        <input type="file" name="image">
-                        <input type="text" name="caption" placeholder="Undertext">
-                        <input type="submit" name="post" value="Lägg upp"></button>
-                    </form>
-                </div>
-        -->
                 <?php
                 $sql = "SELECT * FROM blogposts ORDER BY id ASC";
                     $result=mysqli_query($link, $sql);

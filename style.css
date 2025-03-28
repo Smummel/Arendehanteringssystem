@@ -396,5 +396,7 @@ body{
 #logoutbutton a{
     font-size: 2rem;
 }
-#logoutbutton a:hover{
+.kontaktuppgifter{
+    width: 100%;
+    padding: 20px;
 }
