@@ -1,3 +1,14 @@
+<?php
+    session_start();
+    if(!isset($_SESSION['login'])){
+        $_SESSION['login'] = FALSE;
+    }
+    if(!isset($_SESSION['username'])){
+        $_SESSION['username'] = "UNKNOWN";
+    }
+?>
+
+
 <!DOCTYPE html>
 <?php
 
@@ -109,51 +120,47 @@
             </div>
             <?php
         } elseif($location=='login'){
-            
-            if(isset($_POST['login'])){
-                $sql="SELECT username FROM users";
-                $result=mysqli_query($link, $sql);
-                $usernames=[];
-                while($rad=mysqli_fetch_assoc($result)){
-                    $usernames[] = $rad['username'];
-                }
-                $username=$_POST['username'];
-                $password=md5($_POST['password']);
-                if(in_array($username, $usernames)){
-                    $sql="SELECT password FROM users WHERE username = '$username'";
+            if($_SESSION['login']==TRUE){
+                ?>
+                <div id="selection">
+                    <h1>Du är inloggad som&nbsp;<?=$_SESSION['username']?>.</h1>
+                    <div id="logoutbutton"><a href="logout.php" style="color:red;">Logga ut</a></div>
+                    
+                </div>
+                <?php
+            } else{
+                if(isset($_POST['login'])){
+                    $sql="SELECT username FROM users";
                     $result=mysqli_query($link, $sql);
-                    $rad=mysqli_fetch_assoc($result);
-                    if($rad['password']==$password){
-                        ?>
-                            <div id="selection">
-                                <h1>Du är inloggad som&nbsp;<?=$username?>.</h1>
-                                <div id="skapapost">
-                                    <form action="index.php?location=blog" method="POST" enctype="multipart/form-data">
-                                        <h1>Skapa inlägg</h1>
-                                        <input type="text" name="title" placeholder="Titel">
-                                        <input type="file" name="image">
-                                        <input type="text" name="caption" placeholder="Undertext">
-                                        <input type="submit" name="post" value="Lägg upp"></button>
-                                    </form>
-                                </div>
-                            </div>
-                        <?php
+                    $usernames=[];
+                    while($rad=mysqli_fetch_assoc($result)){
+                        $usernames[] = $rad['username'];
+                    }
+                    $username=$_POST['username'];
+                    $password=md5($_POST['password']);
+                    if(in_array($username, $usernames)){
+                        $sql="SELECT password FROM users WHERE username = '$username'";
+                        $result=mysqli_query($link, $sql);
+                        $rad=mysqli_fetch_assoc($result);
+                        if($rad['password']==$password){
+                            $_SESSION['login'] = TRUE;
+                            $_SESSION['username'] = $username;
+                            header("Location: index.php?location=login");
+                            exit();
+                        } else{
+                            displaylogin();
+                            ?><div style="color:red;z-index:10;">Fel användarnamn eller lösenord</div><?php
+
+                        }
                     } else{
                         displaylogin();
                         ?><div style="color:red;z-index:10;">Fel användarnamn eller lösenord</div><?php
                     }
                 } else{
                     displaylogin();
-                    ?><div style="color:red;z-index:10;">Fel användarnamn eller lösenord</div><?php
-                }
-            } else{
-                displaylogin();
+                } 
             }
-            ?>
-            
-        
-            
-            <?php
+
         } elseif($location=='faq'){
             ?>
             <div id="faqcontent">
@@ -223,6 +230,22 @@
             ?>
             <div id="blog">
                 <h1 style="width:100%; color:white; text-align:center;">Blogsida</h1>
+                <?php
+                if($_SESSION['login']==TRUE){
+                    ?>
+                    <div id="skapapost">
+                        <form action="index.php?location=blog" method="POST" enctype="multipart/form-data">
+                            <h1>Skapa inlägg</h1>
+                            <input type="text" name="title" placeholder="Titel">
+                            <input type="file" name="image">
+                            <input type="text" name="caption" placeholder="Undertext">
+                            <input type="submit" name="post" value="Lägg upp"></button>
+                        </form>
+                    </div>
+                    <?php
+                    
+                } ?>
+                
                 <!--                            PLACERA DETTA FÖR EMPLOYEES ONLY
                 <div id="skapapost">
                     <form action="index.php?location=blog" method="POST" enctype="multipart/form-data">
@@ -243,7 +266,7 @@
                                 <h2><?=$rad["title"]?></h2>
                                 <img src="images/<?=$rad["image"]?>">
                                 <p><?=$rad["caption"]?></p>
-                                <a href="index.php?location=blog&id=<?=$rad['id']?>">Delete</a>
+                                <?php if($_SESSION['login']==True){?><a style="color:red;" href="index.php?location=blog&id=<?=$rad['id']?>">Ta bort</a><?php }?>
                             </div>
                         <?php
                     }
