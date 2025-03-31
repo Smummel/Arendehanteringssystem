@@ -30,6 +30,7 @@
         $sql="DELETE FROM blogposts WHERE id=$id";
         $result=mysqli_query($link, $sql);
     }
+    
 
     function displaylogin(){
         ?>
@@ -131,19 +132,44 @@
                     $sql = "SELECT * FROM tickets ORDER BY id ASC";
                     $result=mysqli_query($link, $sql);
                     while($rad=mysqli_fetch_assoc($result)){
+                        $id=$rad['id'];
                         ?>
                             <div class=post>
+                                <div class="status"><?=$rad['status']?></div>
                                 <div class="kontaktuppgifter">
                                     <h3>Uppgifter</h3>
-                                    
                                     <p><?=$rad['name']?></p>
                                     <p><?=$rad['email']?></p>
                                     <p><?=$rad['phone']?></p>
                                 </div>
-                                <h3 style="width:100%; padding-left: 20px;">Beskrivning</h3>
-                                <p style="width: 100%; padding-left: 20px;"><?=$rad['description']?></p>
+                                <div class="desc">
+                                    <h3 style="width:100%; padding-left: 20px;">Beskrivning</h3>
+                                    <p style="width: 100%; padding-left: 20px;">Plats: <?=$rad['plats']?></p>
+                                    <p style="width: 100%; padding-left: 20px;">Datum: <?=$rad['datum']?></p>
+                                    <p style="width: 100%; padding-left: 20px;"><?=$rad['description']?></p>
+                                </div>
+                                
+                                
                                 <img src="ticketimages/<?=$rad["image"]?>">
-                                <?php if($_SESSION['login']==True){?><a style="color:red;" href="index.php?location=blog&id=<?=$rad['id']?>">Ta bort ärende</a><?php }?>
+                                <?php if($_SESSION['login']==True){?><a style="color:red; padding:5px;" href="deleteticket.php?id=<?=$rad['id']?>">Ta bort ärende</a><?php }?>
+                                <?php
+                                    if(isset($_POST['status'])){
+                                        $status = $_POST['status'];
+                                        $sql="UPDATE tickets SET status='$status' WHERE id=$id";
+                                        $result=mysqli_query($link, $sql);
+                                        $_POST['status'] = '';
+                                        header("Location: index.php?location=login");
+                                    }
+                                ?>
+                                <div class="buttonsbar">
+                                    <form action="index.php?location=login" method="POST">
+                                        <h3>Ändra status:</h3>
+                                        <input type="submit" name="status" value="Pågående utredning">
+                                        <input type="submit" name="status" value="Väntar på kunds svar">
+                                        <input type="submit" name="status" value="Avslutat - Löst">
+                                        <input type="submit" name="status" value="Avslutat - Oförklarigt">
+                                    </form>
+                                </div>
                             </div>
                         <?php
                     }
@@ -201,13 +227,14 @@
                 $name=$_POST['namn'];
                 $email=$_POST['e-post'];
                 $phone=$_POST['phone'];
+                $datum=$_POST['datum'];
                 $plats=$_POST['plats'];
                 $description=$_POST['description'];
                 $photo=$_POST['photo']['name'];
                 $file_name = $_FILES['photo']['name'];
                 $tempname = $_FILES['photo']['tmp_name'];
                 $folder = 'ticketimages/'.$file_name;
-                $sql = "INSERT INTO tickets(name, email, phone, plats, description, image, status) VALUES ('$name','$email','$phone', '$plats', '$description', '$file_name', 'Nytt')";
+                $sql = "INSERT INTO tickets(name, email, phone, plats, datum, description, image, status) VALUES ('$name','$email','$phone', '$plats', '$datum', '$description', '$file_name', 'Nytt')";
                 $result = mysqli_query($link, $sql);
                 move_uploaded_file($tempname, $folder);
             }
@@ -227,8 +254,9 @@
                             <input type="text" name="e-post" placeholder="E-post:" required>
                             <input type="text" name="phone" placeholder="Telefonnummer:" required>
                             <p>Beskriv ditt problem.</p>
-                            <input type="text" name="plats" placeholder="Plats för händelsen:" require>
-                            <input type="text" name="description" placeholder="Skriv här:" require>
+                            <input type="text" name="plats" placeholder="Plats för händelsen:" required>
+                            <input type="date" name="datum" placeholder="Datum:" required>
+                            <input type="text" name="description" placeholder="Skriv här:" required>
                             <p>Bild på problem:</p>
                             <input type="file" name="photo" style="outline:none;">
                             <input type="submit" name="send" value="Skicka"style="width: 100px;">
@@ -279,7 +307,7 @@
                                 <h2><?=$rad["title"]?></h2>
                                 <img src="images/<?=$rad["image"]?>">
                                 <p><?=$rad["caption"]?></p>
-                                <?php if($_SESSION['login']==True){?><a style="color:red;" href="index.php?location=blog&id=<?=$rad['id']?>">Ta bort</a><?php }?>
+                                <?php if($_SESSION['login']==True){?><a style="color:red;" href="deletepost.php&id=<?=$rad['id']?>">Ta bort</a><?php }?>
                             </div>
                         <?php
                     }
