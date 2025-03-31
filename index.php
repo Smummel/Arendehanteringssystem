@@ -25,12 +25,6 @@
         $sql="INSERT INTO users(username, password, role, email, telefon) VALUES ('$username', '$password', 'user', '$email', '$telefon')";
         $result=mysqli_query($link, $sql);
     }
-    if(isset($_GET['id'])){
-        $id=$_GET['id'];
-        $sql="DELETE FROM blogposts WHERE id=$id";
-        $result=mysqli_query($link, $sql);
-    }
-    
 
     function displaylogin(){
         ?>
@@ -133,6 +127,9 @@
                     $result=mysqli_query($link, $sql);
                     while($rad=mysqli_fetch_assoc($result)){
                         $id=$rad['id'];
+                        if(isset($_POST['status'])){
+                            header("Location: updatestatus.php");
+                        }
                         ?>
                             <div class=post>
                                 <div class="status"><?=$rad['status']?></div>
@@ -152,17 +149,8 @@
                                 
                                 <img src="ticketimages/<?=$rad["image"]?>">
                                 <?php if($_SESSION['login']==True){?><a style="color:red; padding:5px;" href="deleteticket.php?id=<?=$rad['id']?>">Ta bort ärende</a><?php }?>
-                                <?php
-                                    if(isset($_POST['status'])){
-                                        $status = $_POST['status'];
-                                        $sql="UPDATE tickets SET status='$status' WHERE id=$id";
-                                        $result=mysqli_query($link, $sql);
-                                        $_POST['status'] = '';
-                                        header("Location: index.php?location=login");
-                                    }
-                                ?>
                                 <div class="buttonsbar">
-                                    <form action="index.php?location=login" method="POST">
+                                    <form action="" method="POST">
                                         <h3>Ändra status:</h3>
                                         <input type="submit" name="status" value="Pågående utredning">
                                         <input type="submit" name="status" value="Väntar på kunds svar">
@@ -170,6 +158,7 @@
                                         <input type="submit" name="status" value="Avslutat - Oförklarigt">
                                     </form>
                                 </div>
+                                
                             </div>
                         <?php
                     }
@@ -275,8 +264,9 @@
                 $tempname = $_FILES['image']['tmp_name'];
                 $folder = 'images/'.$file_name;
                 $title=$_POST['title'];
+                $datum = $_POST['date'];
                 $caption=$_POST['caption'];
-                $sql = "INSERT INTO blogposts(title, image, caption) VALUES ('$title', '$file_name', '$caption')";
+                $sql = "INSERT INTO blogposts(title, datum, image, caption) VALUES ('$title', '$datum', '$file_name', '$caption')";
                 $result = mysqli_query($link, $sql);
                 move_uploaded_file($tempname, $folder);
             }
@@ -290,6 +280,7 @@
                         <form action="index.php?location=blog" method="POST" enctype="multipart/form-data">
                             <h1>Skapa inlägg</h1>
                             <input type="text" name="title" placeholder="Titel">
+                            <input type="date" name="date" placeholder="Datum">
                             <input type="file" name="image">
                             <input type="text" name="caption" placeholder="Undertext">
                             <input type="submit" name="post" value="Lägg upp"></button>
@@ -307,7 +298,7 @@
                                 <h2><?=$rad["title"]?></h2>
                                 <img src="images/<?=$rad["image"]?>">
                                 <p><?=$rad["caption"]?></p>
-                                <?php if($_SESSION['login']==True){?><a style="color:red;" href="deletepost.php&id=<?=$rad['id']?>">Ta bort</a><?php }?>
+                                <?php if($_SESSION['login']==True){?><a style="color:red;" href="deletepost.php?id=<?=$rad['id']?>">Ta bort</a><?php }?>
                             </div>
                         <?php
                     }
