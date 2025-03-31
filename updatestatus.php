@@ -5,8 +5,9 @@
     $password="";
     $link=mysqli_connect($server, $user, $password, "mysticfixers");
 
-    $id = $_GET['id'];
+    $id = $_SESSION['id'];
     $status = $_SESSION['status'];
     $sql="UPDATE tickets SET status='$status' WHERE id=$id";
     $result=mysqli_query($link, $sql);
+    header("Location: index.php?location=login");
 ?>

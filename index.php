@@ -127,7 +127,8 @@
                     $result=mysqli_query($link, $sql);
                     while($rad=mysqli_fetch_assoc($result)){
                         $id=$rad['id'];
-                        if(isset($_POST['status'])){
+                        if(isset($_SESSION['status'])){
+                            $_SESSION['id'] = $id;
                             header("Location: updatestatus.php");
                         }
                         ?>
@@ -150,7 +151,7 @@
                                 <img src="ticketimages/<?=$rad["image"]?>">
                                 <?php if($_SESSION['login']==True){?><a style="color:red; padding:5px;" href="deleteticket.php?id=<?=$rad['id']?>">Ta bort ärende</a><?php }?>
                                 <div class="buttonsbar">
-                                    <form action="" method="POST">
+                                    <form action="" method="SESSION">
                                         <h3>Ändra status:</h3>
                                         <input type="submit" name="status" value="Pågående utredning">
                                         <input type="submit" name="status" value="Väntar på kunds svar">
