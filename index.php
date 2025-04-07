@@ -293,7 +293,7 @@
                     
                 } ?>
                 <?php
-                $sql = "SELECT * FROM blogposts ORDER BY id ASC";
+                $sql = "SELECT * FROM blogposts ORDER BY id DESC";
                     $result=mysqli_query($link, $sql);
                     while($rad=mysqli_fetch_assoc($result)){
                         ?>
