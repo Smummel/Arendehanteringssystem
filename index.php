@@ -123,19 +123,22 @@
 
                     <h1>Ärenden</h1>
                     <?php
-                    $sql = "SELECT * FROM tickets ORDER BY id ASC";
+                    $sql = "SELECT * FROM tickets ORDER BY id DESC";
                     $result=mysqli_query($link, $sql);
                     while($rad=mysqli_fetch_assoc($result)){
                         $id=$rad['id'];
-                        if(isset($_SESSION['status'])){
-                            $_SESSION['id'] = $id;
-                            header("Location: updatestatus.php");
+                        if(isset($_GET['update'])){
+                            $postid = $_GET['update'];
+                            $status = $_POST['status'];
+                            $sql = "UPDATE tickets SET status='$status' WHERE id=$postid";
+                            $restult = mysqli_query($link, $sql);
+                            header("Location: index.php?location=login");
                         }
                         ?>
                             <div class=post>
                                 <div class="status"><?=$rad['status']?></div>
                                 <div class="kontaktuppgifter">
-                                    <h3>Uppgifter</h3>
+                                    <h3>Kontaktuppgifter</h3>
                                     <p><?=$rad['name']?></p>
                                     <p><?=$rad['email']?></p>
                                     <p><?=$rad['phone']?></p>
@@ -147,11 +150,10 @@
                                     <p style="width: 100%; padding-left: 20px;"><?=$rad['description']?></p>
                                 </div>
                                 
-                                
                                 <img src="ticketimages/<?=$rad["image"]?>">
                                 <?php if($_SESSION['login']==True){?><a style="color:red; padding:5px;" href="deleteticket.php?id=<?=$rad['id']?>">Ta bort ärende</a><?php }?>
                                 <div class="buttonsbar">
-                                    <form action="" method="SESSION">
+                                    <form action="index.php?location=login&update=<?=$id?>" method="POST">
                                         <h3>Ändra status:</h3>
                                         <input type="submit" name="status" value="Pågående utredning">
                                         <input type="submit" name="status" value="Väntar på kunds svar">
@@ -299,6 +301,7 @@
                                 <h2><?=$rad["title"]?></h2>
                                 <img src="images/<?=$rad["image"]?>">
                                 <p><?=$rad["caption"]?></p>
+                                <p><?=$rad['datum']?></p>
                                 <?php if($_SESSION['login']==True){?><a style="color:red;" href="deletepost.php?id=<?=$rad['id']?>">Ta bort</a><?php }?>
                             </div>
                         <?php
