@@ -28,6 +28,7 @@ body{
 }
 #background img{
     height: 100vh;
+    user-select: none;
 }
 #fadebox{
     position: fixed; /*YOU DONT WANT TO GO THROUGH THIS AGAIN*/
@@ -413,6 +414,7 @@ body{
     background-color: transparent;
 }
 .status{
+    font-size: .9rem;
     width: auto;
     text-align: right;
     margin-left: auto;

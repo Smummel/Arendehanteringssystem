@@ -134,9 +134,16 @@
                             $restult = mysqli_query($link, $sql);
                             header("Location: index.php?location=login");
                         }
+                        if(isset($_GET['updatepriority'])){
+                            $postid = $_GET['updatepriority'];
+                            $prio = $_POST['priority'];
+                            $sql = "UPDATE tickets SET prioritet='$prio' WHERE id=$postid";
+                            $restult = mysqli_query($link, $sql);
+                            header("Location: index.php?location=login");
+                        }
                         ?>
                             <div class=post>
-                                <div class="status"><?=$rad['status']?></div>
+                                <div class="status">Status: <?=$rad['status']?><br>Prioritet: <?=$rad['prioritet']?></div>
                                 <div class="kontaktuppgifter">
                                     <h3>Kontaktuppgifter</h3>
                                     <p><?=$rad['name']?></p>
@@ -159,6 +166,12 @@
                                         <input type="submit" name="status" value="Väntar på kunds svar">
                                         <input type="submit" name="status" value="Avslutat - Löst">
                                         <input type="submit" name="status" value="Avslutat - Oförklarigt">
+                                    </form>
+                                    <form action="index.php?location=login&updatepriority=<?=$id?>" method="POST">
+                                        <h3>Sätt prioritet:</h3>
+                                        <input type="submit" name="priority" value="Låg">
+                                        <input type="submit" name="priority" value="Medel">
+                                        <input type="submit" name="priority" value="Hög">
                                     </form>
                                 </div>
                                 
@@ -240,12 +253,12 @@
                         <?php
                     } else{
                         ?><form action="index.php?location=report" method="POST" enctype="multipart/form-data">
-                            <h2>Har du paranormala problem? Fyll i detta formulär!</h2>
+                            <h2>Upplever du paranormala problem eller har någon fråga? Fyll i detta formulär!</h2>
                             <p>Kontaktinformation</p>
                             <input type="text" name="namn" placeholder="Ditt namn:" required>
                             <input type="text" name="e-post" placeholder="E-post:" required>
                             <input type="text" name="phone" placeholder="Telefonnummer:" required>
-                            <p>Beskriv ditt problem.</p>
+                            <p>Beskriv ditt ärende.</p>
                             <input type="text" name="plats" placeholder="Plats för händelsen:" required>
                             <input type="date" name="datum" placeholder="Datum:" required>
                             <input type="text" name="description" placeholder="Skriv här:" required>

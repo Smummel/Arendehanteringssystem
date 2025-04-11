@@ -1,0 +1,50 @@
+
+
+Sammanfattning av ChatGPT konversation
+Detta är information som kunden/ChatGPT/Mystic Fixers gav
+
+
+Företag: Mystic Fixers – Paranormal Ärendehantering
+Bransch: Paranormal utredning, förbannelser och övernaturliga fenomen
+Syfte med webbsidan: Skapa ett ärendehanteringssystem där kunder kan rapportera övernaturliga problem och där företagets personal kan hantera, prioritera och lösa dessa ärenden.
+
+1. Kundintervju – Specifikationer
+Målgrupp: Privatpersoner, fastighetsägare och företag som upplever paranormal aktivitet.
+
+Formulär för kunder: Namn, plats, beskrivning, bifogade filer, prioritet (Låg, Medel, Hög).
+
+Prioritering av ärenden: Låg, Medel, Hög
+
+Designönskemål:
+Mörkt tema: svart, lila.
+Skräckinspirerad men professionell känsla
+Responsiv design för mobil
+
+Funktioner:
+"Akut hjälp"-knapp
+Adminpanel för ärendehantering
+Bloggsektion och galleri
+
+2. Landing Page – Beskrivning
+Header: Logotyp, meny, akut-knapp
+
+Galleri: Bilder och bevis från fall
+Footer: Kontaktuppgifter och sociala medier
+
+3. Hur ärenden hanteras
+Kunder fyller i ett formulär och får ett bekräftelsemail.
+Ärendet hamnar i en adminpanel där personal kan:
+Se inkomna ärenden
+Uppdatera status (Nytt, Pågående, Väntar, Avslutat)
+
+4. Krav på projektets genomförande
+Funktionella krav:
+Ärendeformulär med filuppladdning
+Prioritering och statusuppdateringar
+Adminpanel
+Responsiv design
+"Akut hjälp"-funktion
+
+Designkrav:
+Mörkt, mystiskt tema
+Användarvänlig layout med bra kontrast
